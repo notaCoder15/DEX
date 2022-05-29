@@ -5,6 +5,7 @@ import "./exchanges/csmmExchange.sol";
 import "./exchanges/cpmmExchange.sol";
 import "./exchanges/cmmmExchange.sol";
 
+// this contarct is used to create exchange contracts between tokens
 
 contract factory{
 
@@ -13,12 +14,14 @@ contract factory{
     event NewCMMMexchange(address[] indexed _tokens , address indexed exchange);
 
 
-    mapping (address => mapping(address => address)) CSMMtokenToExchange;
-    mapping (address => mapping(address => address)) CPMMtokenToExchange;
+    mapping (address => mapping(address => address)) CSMMtokenToExchange;      // mapping of token addressed with exchange addresses
+    mapping (address => mapping(address => address)) CPMMtokenToExchange;       // mapping of token addressed with exchange addresses
 
-    mapping (address => mapping (address => bool)) CSMMtokenTotoken;
-    mapping (address => mapping (address => bool)) CPMMtokenTotoken;
+    mapping (address => mapping (address => bool)) CSMMtokenTotoken;        // mapping to check if exchange already created
+    mapping (address => mapping (address => bool)) CPMMtokenTotoken;        // mapping to check if exchange already created
 
+
+// this function creates a Constant Sum Automated market maker contract between the input tokes
     function createCSMMexchange(address _token0 , address _token1) external returns(address){
         require(_token0 != address(0) && _token1 != address(0) , "not valid token addresses");
         require(CSMMtokenTotoken[_token0][_token1] == false && CSMMtokenTotoken[_token1][_token0] == false , "Exchange already exists");
@@ -36,6 +39,8 @@ contract factory{
         return address(Exchange);
     }
 
+
+// this function creates a Constant Product Automated market maker contract between the input tokes
     function createCPMMexchange(address _token0 , address _token1) external returns(address){
         require(_token0 != address(0) && _token1 != address(0) , "not valid token addresses");
         require(CPMMtokenTotoken[_token0][_token1] == false && CPMMtokenTotoken[_token1][_token0] == false , "Exchange already exists");
@@ -53,6 +58,8 @@ contract factory{
         return address(Exchange);
     }
 
+
+// this function creates a Constant Mean Automated market maker contract between the input tokes
     function createCMMMexchange(address[] memory _tokens , uint[] memory _weights) external returns(address){
         uint len = _tokens.length;
 

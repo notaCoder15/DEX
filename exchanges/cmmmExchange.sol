@@ -38,7 +38,7 @@ contract cmmmExchange is ERC20{
     }
 
 
-
+// swaps betweent the given tokens
 
     function swap(address _tokenIn , uint _amount , address _tokenOut) public returns(uint _amountOut){
         
